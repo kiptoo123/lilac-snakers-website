@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneaker Store</title>
+</head>
+<style>/* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    
+    }
+    
+    header {
+        background-color: #333;
+        color: rgb(103, 86, 107);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    nav ul li {
+        display: inline;
+        margin-right: 20px;
+    }
+    
+    nav a {
+        color: rebeccapurple;
+        text-decoration: none;
+    }
+    
+    .cart {
+        position: relative;
+    }
+    
+    .cart button {
+        background-color: #fff;
+        color: #333;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    .hero {
+        background-color: #f4f4f4;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .product-section {
+        padding: 2rem;
+    }
+    
+    .product-filter {
+        margin-bottom: 1rem;
+    }
+    
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .product-card img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .product-card button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    footer {
+        text-align: center;
+        padding: 0.5rem;
+        background-color: #b81414;
+        color: white;
+    }
+    
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    
+    .close-button {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close-button:hover,
+    .close-button:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;}
+        
+.contact form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact input, .contact textarea {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+.contact button {
+    padding: 1rem;
+    background: #333;
+    color: #fff;
+    border: none;
+}
+
+    </style>
+<body style="background-color: #b81414;">
+    <header>
+        <div class="logo">
+            <h1>LILAC SNEAKERS STORE
+            </h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <button id="cart-button">Cart (0)</button>
+        </div>
+    </header>
+
+    <main style="background-color: aquamarine;">
+        <section id="home" class="hero">
+            <h1>EXPLORE THE LATEST KICKS FROM OUR STORE</h1><br><br>
+            <p>Find the best quality sneakers from our store at the best prices</p>
+            <a class="cta-button" href="#products">Shop Now</a>
+        </section>
+
+        <section id="products" class="product-section">
+            <h2>Latest Sneakers</h2>
+            <div class="product-filter">
+                <input type="text" id="filter" placeholder="Search for sneakers...">
+            </div>
+            <div id="product-list" class="product-grid">
+                <!-- Product items will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>About Us</h2>
+            <p>oin the sneaker squad at LILAC SNEAKER!
+                Our store is your destination for all things sneakers, 
+                from classic designs to limited-edition drops. With new arrivals daily and expert advice from our staff, <br>
+                you'll never miss out on the latest and greatest in sneaker culture.
+       </section></p>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Contact Us</h2>
+            <form>
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="number" name="Phone number" placeholder="Enter phone number" required>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+<p>&copy;LILACSneakerStore. All rights reserved.</p>
+    </footer>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Cart</h2>
+            <ul id="cart-list"></ul>
+            <p id="total-price">Total: $0.00</p>
+        </div>
+    </div>
+
+        <script>const products = [
+            {
+                id: 1,
+                name: 'Nike Air Max',
+                price: 120,
+                image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQOr412sKgz1qlW4x1flrstwohLPLIUfABCVYc38pV4MDYtSLSNt-DOAUVdVw9UJRs9C-PX_518jL_GbuDLmI6GT-VffdQ_Hln5uz0WA7PPVRZHIc2M2Bsmfyo'
+            },
+            {
+                id: 2,
+                name: 'Adidas Ultraboost',
+                price: 150,
+                image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQo3BVCiINXR26jEaj7AJ4x6F0dXTon-wSlf2KwbRbkPZBbFtEBDYU3xDE1BfNVGdPwe3f8aW1c1mcFSDaFGiOqDsK8suKhTOoTOaZ-a9C2XipgHEQ2wUdD'
+            },
+            {
+                id: 3,
+                name: 'Puma RS-X',
+                price: 110,
+                image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ5NFFXtcgul6WsUjVC34tVlzefK_6xdP46YLdCx7VYze1WrNKWLz_FNDkZfbl3N9WsivUpL-UTjO8msiyqfKjsDErHDjmjOfBdGWzn4Krn7sOtEkdlzuLTk6g'
+            },
+
+            {
+                id: 2,
+                name: 'Jordan 2',
+                price: 150,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDYubrXuopTPoASlwHs0tc86EBnznp4su-rg&s'
+            },
+            {
+                id: 2,
+                name: 'Jordan 4',
+                price: 150,
+                image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_2ma4Qb67ikeFMpLGCTTgjFoWXjS9n6rRYVkm0yuEBYvQlElmkas31hlBzC6PpujQYqaS7sdDsqmBfhnatgmKLTz3xhN-uCPEGiEHE2ybo2PjVfKJ7lJI'
+            },
+            {
+                id: 2,
+                name: 'Air max 90',
+                price: 150,
+                image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSVDGEhJ9Mmfe_hkk71UYbxbNLN1asBmLxWeeh2QVq2gdFedqG0E9beIJIvtn4QMvb7q02A8iBAfrlYF8jQp8vLXsCI2h3Us6KmCd88kRCO9bC43wtQ2V7el4w'
+            },
+            {
+                id: 2,
+                name: 'Nake wholfe',
+                price: 150,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkivukwEtVp86M1dLHoUWXBSx-dgJyZ-K9BQ&s'
+            },
+            {
+                id: 2,
+                name: 'Air force 1',
+                price: 150,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQZulhyfy_nHcv1A57ssIqxC9gxurVakNPEg&s'},
+            {
+                id: 2,
+                name: 'Canvas low',
+                price: 150,
+                image: 'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQFAupJ6H2OlrEfohQmEPNlc_cJ7mIPujh-PUmu1AbM6v1hJeEQH13GTqWMDoS_h-WEON7R-Jrb40wrJre3HVtgSoCl93up10Yhv8iBVrMvIjD26MveOTh5mQ'
+            },
+            {
+                id: 2,
+                name: 'Jordan 3',
+                price: 150,
+                image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTFEBW7DRBd7fjEBVwBN8mjhkBHODueKjV_GTKhTYsbsK0KbhdWFQKJ8k9w8PihSeciDuvy4wtQiC0AnBnoxhlWs5i_EBJuYOwj_v2RhSlZUB1rTKpZIyLhsmE'
+            },
+            {
+                id: 2,
+                name: 'Balenciaga',
+                price: 150,
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvUVbNXenIBHbpkOO9fdF4YtS_dEdC7bcb8Q&s'
+            },
+            {
+                id: 2,
+                name: 'Bape Star',
+                price: 150,
+                image: 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQH7-yh3kLUruJ8QnNH9WJ6bNVIwGZNFOE4V3NYu4kJ8elMwtXrkezJZ2pyGe-dShMpwqIHxsFvR3eS4PA9lYWs_Ykl7Zf0ypzJQ2wjCnLRnvxFpDCPgP-y'
+            },  
+        ];
+        
+        let cart = [];
+        
+        // Function to display products
+        function displayProducts() {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>$${product.price.toFixed(2)}</p>
+                    <button onclick="addToCart(${product.id})">Add to Cart</button>
+                `;
+                productList.appendChild(productCard);
+            });
+        }
+        
+        // Function to add product to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartCount();
+        }
+        
+        // Update the cart count
+        function updateCartCount() {
+            const cartButton = document.getElementById('cart-button');
+            cartButton.innerText = `Cart (${cart.length})`;
+        }
+        
+        // Display the cart when the button is clicked
+        document.getElementById('cart-button').onclick = function() {
+            displayCart();
+        };
+        
+        // Function to display the cart
+        function displayCart() {
+            const cartModal = document.getElementById('cart-modal');
+            const cartList = document.getElementById('cart-list');
+            const totalPrice = document.getElementById('total-price');
+        
+            cartList.innerHTML = '';
+            let total = 0;
+        
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - $${item.price.toFixed(2)}`;
+                cartList.appendChild(listItem);
+                total += item.price;
+            });
+        
+            totalPrice.innerText = `Total: $${total.toFixed(2)}`;
+            cartModal.style.display = 'block';
+        }
+        
+        // Close the modal
+        document.querySelector('.close-button').onclick = function() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+        
+        // Filter functionality
+        document.getElementById('filter').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const productCards = document.querySelectorAll('.product-card');
+            productCards.forEach(card => {
+                const productName = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = productName.includes(filter) ? '' : 'none';
+            });
+        });
+        
+        // Initial display
+        displayProducts();</script>
+</body>
+</html>
